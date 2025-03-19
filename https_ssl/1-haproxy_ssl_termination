@@ -37,7 +37,6 @@ defaults
 frontend lb-frontend
         bind *:80
         reqadd X-Forwarded-Proto:\ http
-        #acl host_example_com hdr(host) -i www.gthierry.tech
         default_backend lb-backend
 
 frontend lb-frontend-https
