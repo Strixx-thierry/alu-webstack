@@ -5,15 +5,11 @@ function get_sub_info {
   local domain=$1
   local subdomain=$2
   local full_domain="${subdomain}.${domain}"
-  local record_info=$(dig +short ${full_domain})
+  local record_info=$(dig +noall +answer ${full_domain} | awk '{print $4, $5}')
+  local record_type=$(echo $record_info | awk '{print $1}')
+  local record_ip=$(echo $record_info | awk '{print $2}')
 
-  if [[ -z "$record_info" ]]; then
-    echo "No DNS record found for ${full_domain}"
-    return
-  fi
-
-  # Assuming the record is an A record (IPv4 address), adjust if you want to handle more types.
-  echo "The subdomain ${subdomain} points to IP ${record_info}"
+  echo "The subdomain ${subdomain} is a ${record_type} record and points to ${record_ip}"
 }
 
 domain=$1
@@ -25,4 +21,6 @@ if [[ -z "$subdomain" ]]; then
   done
 else
   get_sub_info $domain $subdomain
-fi
+figit add .
+git commit -m 'ok'
+git push
