@@ -21,6 +21,4 @@ if [[ -z "$subdomain" ]]; then
   done
 else
   get_sub_info $domain $subdomain
-figit add .
-git commit -m 'ok'
-git push
+fi
