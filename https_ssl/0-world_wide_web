@@ -5,8 +5,6 @@ function get_sub_info {
   local domain=$1
   local subdomain=$2
   local full_domain="${subdomain}.${domain}"
-  
-  # Use +short to simplify the output and catch all potential records
   local record_info=$(dig +short ${full_domain})
 
   if [[ -z "$record_info" ]]; then
@@ -14,14 +12,13 @@ function get_sub_info {
     return
   fi
 
-  # Check for the type of record
-  echo "The subdomain ${subdomain} is an A record and points to ${record_info}"
+  # Assuming the record is an A record (IPv4 address), adjust if you want to handle more types.
+  echo "The subdomain ${subdomain} points to IP ${record_info}"
 }
 
 domain=$1
 subdomain=$2
 
-# If no subdomain is given, loop over default subdomains
 if [[ -z "$subdomain" ]]; then
   for sub in www lb-01 web-01 web-02; do
     get_sub_info $domain $sub
